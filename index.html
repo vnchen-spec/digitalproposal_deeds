@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>契約中的空間 · Space in the Deeds</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0C09;--sf:#151310;--cd:#1D1B14;--cx:#242018;
+  --br:rgba(210,178,100,0.1);--brh:rgba(210,178,100,0.22);
+  --tx:#e8e1d1;--mt:#837a6b;--dm:#4e4a44;--hl:#C09040;
+  --r:6px
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sans-serif;overflow:hidden;display:flex;align-items:center;justify-content:center}
+
+.landing{display:flex;flex-direction:column;align-items:center;gap:0;width:560px}
+
+/* Header text */
+.l-title{text-align:center;margin-bottom:48px}
+.l-title .zh{font-size:22px;font-weight:500;color:var(--tx);letter-spacing:.18em;display:block;margin-bottom:6px}
+.l-title .en{font-size:11px;color:var(--mt);letter-spacing:.12em;display:block;margin-bottom:14px}
+.l-title .sub{font-size:9px;color:var(--dm);letter-spacing:.05em;line-height:1.7;display:block}
+.l-divider{width:40px;height:0.5px;background:var(--hl);opacity:.35;margin:18px auto 0}
+
+/* Drop zone */
+.drop-zone{
+  width:100%;
+  border:0.5px dashed var(--brh);
+  border-radius:var(--r);
+  background:var(--sf);
+  padding:52px 40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+  transition:border-color .2s, background .2s;
+  position:relative;
+  overflow:hidden;
+}
+.drop-zone::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(192,144,64,0.06) 0%, transparent 65%);
+  pointer-events:none;
+}
+.drop-zone:hover,.drop-zone.drag-over{
+  border-color:rgba(210,178,100,0.45);
+  background:var(--cd);
+}
+.drop-zone:hover .dz-icon,.drop-zone.drag-over .dz-icon{
+  opacity:.9;
+}
+
+.dz-icon{
+  width:48px;height:48px;opacity:.5;transition:opacity .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.dz-icon svg{width:48px;height:48px}
+
+.dz-label{text-align:center}
+.dz-label .main{font-size:13px;color:var(--tx);letter-spacing:.06em;display:block;margin-bottom:5px}
+.dz-label .sub{font-size:10px;color:var(--mt);letter-spacing:.04em;display:block}
+
+.dz-types{display:flex;gap:8px;margin-top:4px}
+.dz-tag{font-size:9px;color:var(--dm);background:var(--cx);border:0.5px solid var(--br);border-radius:3px;padding:2px 8px;letter-spacing:.04em}
+
+/* hidden file input */
+#file-input{display:none}
+
+/* Upload button */
+.upload-btn{
+  margin-top:28px;
+  padding:11px 40px;
+  background:transparent;
+  border:0.5px solid var(--brh);
+  border-radius:4px;
+  color:var(--hl);
+  font-size:12px;
+  letter-spacing:.14em;
+  cursor:pointer;
+  transition:all .2s;
+  position:relative;
+  overflow:hidden;
+}
+.upload-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(192,144,64,0);
+  transition:background .2s;
+}
+.upload-btn:hover{border-color:rgba(210,178,100,0.55)}
+.upload-btn:hover::before{background:rgba(192,144,64,0.07)}
+.upload-btn.loading{opacity:.5;pointer-events:none}
+
+/* File name display */
+.file-name{
+  font-size:10px;color:var(--mt);letter-spacing:.04em;
+  margin-top:12px;min-height:16px;text-align:center;
+  transition:opacity .2s;
+}
+
+/* Progress bar */
+.progress-wrap{
+  width:100%;height:1px;background:var(--dm);border-radius:1px;
+  margin-top:20px;overflow:hidden;opacity:0;transition:opacity .3s;
+}
+.progress-bar{height:1px;background:var(--hl);width:0%;transition:width .6s ease;border-radius:1px}
+
+/* Footer note */
+.l-note{margin-top:36px;font-size:9px;color:var(--dm);letter-spacing:.05em;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+
+<div class="landing">
+  <div class="l-title">
+    <span class="zh">Space in the Deeds</span>
+    <div class="l-divider"></div>
+    <span class="sub" style="margin-top:14px;display:block">Household Division and Property Transactions in Fujian Vernacular Architecture</span>
+  </div>
+
+  <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+    <div class="dz-icon">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Document icon -->
+        <rect x="8" y="4" width="26" height="34" rx="2" stroke="#C09040" stroke-width="0.8" fill="none" opacity="0.6"/>
+        <rect x="8" y="4" width="26" height="34" rx="2" fill="rgba(192,144,64,0.04)"/>
+        <!-- Folded corner -->
+        <path d="M26 4 L34 12 L26 12 Z" fill="rgba(192,144,64,0.12)" stroke="#C09040" stroke-width="0.8" stroke-linejoin="round" opacity="0.6"/>
+        <!-- Text lines -->
+        <line x1="13" y1="20" x2="29" y2="20" stroke="#C09040" stroke-width="0.7" opacity="0.4"/>
+        <line x1="13" y1="25" x2="29" y2="25" stroke="#C09040" stroke-width="0.7" opacity="0.4"/>
+        <line x1="13" y1="30" x2="22" y2="30" stroke="#C09040" stroke-width="0.7" opacity="0.4"/>
+        <!-- Upload arrow -->
+        <path d="M37 34 L37 44 M33 38 L37 34 L41 38" stroke="#C09040" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+      </svg>
+    </div>
+
+    <div class="dz-label">
+      <span class="main">Drag &amp; drop deed documents here</span>
+      <span class="sub">or click to browse</span>
+    </div>
+
+    <div class="dz-types">
+      <span class="dz-tag">PDF</span>
+      <span class="dz-tag">JPG / PNG</span>
+      <span class="dz-tag">JSON</span>
+      <span class="dz-tag">TXT</span>
+    </div>
+  </div>
+
+  <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.json,.txt">
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <button class="upload-btn" id="upload-btn" onclick="handleUpload()">
+    Upload Document
+  </button>
+  <div class="file-name" style="margin-top:12px;font-size:12px;color:var(--dm)">demo — no file needed, click Upload to continue</div>
+
+  <div class="l-note">
+    Late Imperial China &nbsp;·&nbsp; Fujian &nbsp;·&nbsp; Dacuo &amp; Tulou
+  </div>
+</div>
+
+<script>
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const fileNameEl = document.getElementById('file-name');
+const progressWrap = document.getElementById('progress-wrap');
+const progressBar = document.getElementById('progress-bar');
+const uploadBtn = document.getElementById('upload-btn');
+
+let selectedFile = null;
+
+// Drag & drop events
+dropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) selectFile(f);
+});
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) selectFile(fileInput.files[0]);
+});
+
+function selectFile(f) {
+  selectedFile = f;
+  fileNameEl.textContent = f.name;
+}
+
+function handleUpload() {
+  uploadBtn.classList.add('loading');
+  progressWrap.style.opacity = '1';
+
+  // Animate progress bar then redirect
+  let w = 0;
+  const tick = setInterval(() => {
+    w += Math.random() * 18 + 8;
+    if (w >= 92) { w = 92; clearInterval(tick); }
+    progressBar.style.width = w + '%';
+  }, 80);
+
+  setTimeout(() => {
+    progressBar.style.width = '100%';
+    setTimeout(() => {
+      window.location.href = 'index-old.html';
+    }, 400);
+  }, 900);
+}
+</script>
+</body>
+</html>
